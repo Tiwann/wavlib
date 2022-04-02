@@ -1,4 +1,3 @@
-#define WAVLIB_IMPLEMENTATION
 #include "wav.h"
 
 #include <fstream>

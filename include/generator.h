@@ -1,4 +1,6 @@
 #pragma once
+#define WAVLIB_IMPLEMENTATION
+
 #include <wavlib.h>
 #include <cmath>
 #include <vector>
@@ -10,13 +12,9 @@ namespace wavlib
 {
 	namespace generators
 	{
-		/*
-			Base class for audio generators
-		*/
+		/* Base class for audio generators */
 		class WAVLIB_API generator
 		{
-
-		private:
 		protected:
 			float angle, offset;
 			float m_amplitude;
@@ -26,33 +24,14 @@ namespace wavlib
 			unsigned int m_sample_rate;
 			unsigned int m_num_samples;
 
-
-			generator(float amp, float freq, float dur, float phase = 0.0f, unsigned int rate = 44100)
-				: m_amplitude(amp), m_frequency(freq), m_duration(dur), m_phase(phase), m_sample_rate(rate), m_num_samples(0)
-			{
-				m_num_samples = m_sample_rate * m_duration;
-				angle = 0.0f;
-				offset = (2 * _PI * m_frequency + m_phase) / m_sample_rate;
-			}
+			generator(float amp, float freq, float dur, float phase = 0.0f, unsigned int rate = 44100);
 
 		public:
 			generator() = delete;
 			virtual ~generator(){}
-
 			virtual float gen() = 0;
 
-			wav towav()
-			{
-				wav output(1, m_sample_rate, 16, m_num_samples);
-				std::vector<float> samples;
-				for (int i = 0; i < m_num_samples; i++)
-				{
-					samples.push_back(gen());
-				}
-				output.setdata(samples);
-				return output;
-			}
-
+			wav				towav();
 			float			amp()	const { return m_amplitude; }
 			float			freq()	const { return m_frequency; }
 			float			dur()	const { return m_duration; }
@@ -62,9 +41,7 @@ namespace wavlib
 		};
 
 
-		/*
-			Simple sinewave generator
-		*/
+		/* Simple sinewave generator */
 		class WAVLIB_API sine : public generator
 		{
 		public:
@@ -83,8 +60,7 @@ namespace wavlib
 		class WAVLIB_API square : public generator
 		{
 		public:
-			square(float amp, float freq, float dur, float phase = 0.0f, unsigned int rate = 44100) : generator(amp, freq, dur, phase, rate)
-			{}
+			square(float amp, float freq, float dur, float phase = 0.0f, unsigned int rate = 44100) : generator(amp, freq, dur, phase, rate){}
 
 			float gen() override
 			{
@@ -98,8 +74,7 @@ namespace wavlib
 		class WAVLIB_API triangle : public generator
 		{
 		public:
-			triangle(float amp, float freq, float dur, float phase = 0.0f, unsigned int rate = 44100) : generator(amp, freq, dur, phase, rate)
-			{}
+			triangle(float amp, float freq, float dur, float phase = 0.0f, unsigned int rate = 44100) : generator(amp, freq, dur, phase, rate){}
 
 			float gen() override
 			{
@@ -110,3 +85,4 @@ namespace wavlib
 		};
 	}
 }
+

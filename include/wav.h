@@ -1,4 +1,6 @@
 #pragma once
+
+#define WAVLIB_IMPLEMENTATION
 #include <wavlib.h>
 #include <memory>
 #include <vector>
