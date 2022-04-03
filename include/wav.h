@@ -3,6 +3,7 @@
 #define WAVLIB_IMPLEMENTATION
 #include <wavlib.h>
 #include <string>
+#include <cstring>
 #include <vector>
 
 namespace wavlib
@@ -54,6 +55,11 @@ namespace wavlib
             data.raw_frames = std::vector<char>();
             data.raw_frames.reserve(pcm.size() * sizeof(float));
             std::memcpy(data.raw_frames.data(), pcm.data(), pcm.size() * sizeof(float));
+        }
+
+        void setdata(const std::vector<char>& raw_pcm)
+        {
+            data.raw_frames = raw_pcm;
         }
 
         void setformat(const wav_fmt& new_format)

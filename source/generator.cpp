@@ -1,4 +1,5 @@
 #include "generator.h"
+#include <algorithm>
 
 wavlib::generators::generator::generator(float amp, float freq, float dur, float phase, unsigned int rate)
 	: m_amplitude(amp), m_frequency(freq), m_duration(dur), m_phase(phase), m_sample_rate(rate), m_num_samples(0)
@@ -10,20 +11,17 @@ wavlib::generators::generator::generator(float amp, float freq, float dur, float
 
 wavlib::wav wavlib::generators::generator::towav()
 {
-	wav output;
-	output.setformat(wav_fmt(
-		
-	));
-	std::vector<int32_t> samples;
-	samples.reserve(m_num_samples);
-	
-	for (int i = 0; i < static_cast<int>(m_num_samples); i++)
+	const int16_t max = static_cast<int16_t>(std::pow(2, 16) - 1);
+	const int16_t min = -max - 1;
+	std::vector<char> samples;
+	samples.reserve(m_num_samples * sizeof(int16_t));
+	for (int i = 0; i < static_cast<int>(m_num_samples); i += sizeof(int16_t))
 	{
 		const float sample = gen();
-		int32_t intsample = static_cast<int32_t>(sample) * static_cast<int32_t>(std::pow(2, 32) - 1);
-		intsample = std::
-		samples.push_back();
+		int16_t intsample = static_cast<int16_t>(sample) * static_cast<int16_t>(std::pow(2, 16) - 1);
+		intsample = std::clamp(intsample, min, max);
+		std::memcpy(&samples[i], &intsample, sizeof(int16_t));
 	}
-	output.setdata(samples);
+	wav output(1, m_sample_rate, 16, samples);
 	return output;
 }

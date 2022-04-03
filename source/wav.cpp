@@ -3,7 +3,7 @@
 #include <fstream>
 #include <algorithm>
 #include <iostream>
-
+#include <cmath>
 #include "utils.h"
 
 namespace wavlib
@@ -64,7 +64,7 @@ namespace wavlib
         stream.write(reinterpret_cast<const char*>(&fmt), sizeof(wav_fmt));
         stream.write(reinterpret_cast<const char*>(&data), 8);
 
-        const int maxvalue = static_cast<int>(pow(2, fmt.bit_depth) - 1);
+        const int maxvalue = static_cast<int>(std::pow(2, fmt.bit_depth) - 1);
         const int minvalue = -maxvalue - 1;
         
         stream.seekp(4, std::ios::beg);
