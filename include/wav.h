@@ -2,7 +2,7 @@
 
 #define WAVLIB_IMPLEMENTATION
 #include <wavlib.h>
-#include <memory>
+#include <string>
 #include <vector>
 
 namespace wavlib
@@ -11,55 +11,60 @@ namespace wavlib
     struct WAVLIB_API wav_header
     {
         uint8_t     id[4] = { 'R', 'I', 'F', 'F' };
-        uint32_t    size;
+        uint32_t    size{};
         uint8_t     format[4] = { 'W', 'A', 'V', 'E' };
     };
 
     struct WAVLIB_API wav_fmt
     {
         uint8_t     id[4] = { 'f', 'm', 't', ' ' };
-        uint32_t    size;
-        uint16_t    format;
-        uint16_t    channels;
-        uint32_t    sample_rate;
-        uint32_t    byte_rate;
-        uint16_t    block_align;
-        uint16_t    bit_depth;
+        uint32_t    size{};
+        uint16_t    format{};
+        uint16_t    channels{};
+        uint32_t    sample_rate{};
+        uint32_t    byte_rate{};
+        uint16_t    block_align{};
+        uint16_t    bit_depth{};
     };
 
-
+    struct WAVLIB_API wav_data
+    {
+        uint8_t                 id[4] = { 'd', 'a', 't', 'a' };
+        uint32_t                size{};
+        uint32_t                num_frames{};
+        std::vector<char>       raw_frames;
+    };
+    
     class WAVLIB_API wav
     {
     protected:
-        uint16_t m_num_channels;
-        uint32_t m_sample_rate;
-        uint32_t m_byte_rate;
-        uint16_t m_block_align;
-        uint16_t m_bits_per_sample;
-        std::vector<float>   m_sound_data;
-        uint32_t m_num_frames;
+        wav_header  header;
+        wav_fmt     fmt;
+        wav_data    data;
 
     public:
-        const uint16_t& channels()  const { return m_num_channels;        }
-        const uint32_t& frequency() const { return m_sample_rate;         }
-        const uint32_t& byterate()  const { return m_byte_rate;           }
-        const uint16_t& bit_depth() const { return m_bits_per_sample;     }
-        const float*    data()      const { return m_sound_data.data(); }
-
-        void setdata(float* data, size_t size)
+        const uint16_t& channels()  const { return fmt.channels;    }
+        const uint32_t& frequency() const { return fmt.sample_rate; }
+        const uint32_t& byterate()  const { return fmt.byte_rate;   }
+        const uint16_t& bit_depth() const { return fmt.bit_depth;   }
+        const char*     raw_pcm()   const { return data.raw_frames.data(); }
+        
+        void setdata(const std::vector<float>& pcm)
         {
-            m_sound_data = std::vector<float>(data, data + size);
+            data.raw_frames = std::vector<char>();
+            data.raw_frames.reserve(pcm.size() * sizeof(float));
+            std::memcpy(data.raw_frames.data(), pcm.data(), pcm.size() * sizeof(float));
         }
 
-        void setdata(const std::vector<float>& data)
+        void setformat(const wav_fmt& new_format)
         {
-            m_sound_data = data;
+            fmt = new_format;
         }
 
         wav();
-        wav(uint16_t channels, uint32_t frequency, uint16_t depth, const uint8_t* audio, uint32_t frames);
-        wav(uint16_t channels, uint32_t frequency, uint16_t depth, uint32_t frames);
+        wav(uint16_t channels, uint32_t frequency, uint16_t depth, const std::vector<char>& raw_audio);
+        wav(const std::string& filename);
 
-        bool write_to_file(const char* filename);
+        bool write_to_file(const char* filename) const;
     };
 }

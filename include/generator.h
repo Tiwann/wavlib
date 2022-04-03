@@ -28,7 +28,7 @@ namespace wavlib
 
 		public:
 			generator() = delete;
-			virtual ~generator(){}
+			virtual ~generator() = default;
 			virtual float gen() = 0;
 
 			wav				towav();
@@ -50,7 +50,7 @@ namespace wavlib
 
 			float gen() override
 			{
-				float sample = m_amplitude * std::sin(angle);
+				const float sample = m_amplitude * std::sin(angle);
 				angle += offset;
 				return sample;
 			}
@@ -64,7 +64,7 @@ namespace wavlib
 
 			float gen() override
 			{
-				float sample = m_amplitude * wavlib::sgn(std::sin(angle));
+				const float sample = m_amplitude * wavlib::sgn(std::sin(angle));
 				angle += offset;
 				return sample;
 			}
@@ -78,7 +78,7 @@ namespace wavlib
 
 			float gen() override
 			{
-				float sample = m_amplitude * wavlib::triangle(angle);
+				const float sample = m_amplitude * wavlib::triangle(angle);
 				angle += offset;
 				return sample;
 			}
