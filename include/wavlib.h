@@ -23,7 +23,7 @@
 		#define WAVLIB_API WAVLIB_DLL_IMPORT
 	#endif
 
-	#define WAVLIB_PRIVATE DRWAV_DLL_PRIVATE
+	#define WAVLIB_PRIVATE WAVLIB_DLL_PRIVATE
 #endif
 
 #include <cstdint>
