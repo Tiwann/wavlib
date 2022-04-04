@@ -54,18 +54,6 @@ namespace wavlib
         const uint16_t& bit_depth()         const { return fmt.bit_depth;   }
         const uint32_t& num_frames()        const { return data.num_frames; }
         const std::vector<char>& raw_pcm()  const { return data.raw_frames; }
-        
-        void setdata(const std::vector<float>& pcm)
-        {
-            data.raw_frames = std::vector<char>();
-            data.raw_frames.reserve(pcm.size() * sizeof(float));
-            std::memcpy(data.raw_frames.data(), pcm.data(), pcm.size() * sizeof(float));
-        }
-
-        void setdata(const std::vector<char>& raw_pcm)
-        {
-            data.raw_frames = raw_pcm;
-        }
 
         wav();
         wav(uint16_t channels, uint32_t frequency, uint16_t depth, const std::vector<char>& raw_audio);
