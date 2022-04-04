@@ -48,11 +48,12 @@ namespace wavlib
         
     public:
         friend class generators::generator;
-        const uint16_t& channels()  const { return fmt.channels;    }
-        const uint32_t& frequency() const { return fmt.sample_rate; }
-        const uint32_t& byterate()  const { return fmt.byte_rate;   }
-        const uint16_t& bit_depth() const { return fmt.bit_depth;   }
-        const char*     raw_pcm()   const { return data.raw_frames.data(); }
+        const uint16_t& channels()          const { return fmt.channels;    }
+        const uint32_t& frequency()         const { return fmt.sample_rate; }
+        const uint32_t& byterate()          const { return fmt.byte_rate;   }
+        const uint16_t& bit_depth()         const { return fmt.bit_depth;   }
+        const uint32_t& num_frames()        const { return data.num_frames; }
+        const std::vector<char>& raw_pcm()  const { return data.raw_frames; }
         
         void setdata(const std::vector<float>& pcm)
         {
