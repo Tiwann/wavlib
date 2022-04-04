@@ -6,8 +6,10 @@
 #include <cstring>
 #include <vector>
 
+
 namespace wavlib
 {
+    namespace generators { class generator; }
 
     struct WAVLIB_API wav_header
     {
@@ -19,7 +21,7 @@ namespace wavlib
     struct WAVLIB_API wav_fmt
     {
         uint8_t     id[4] = { 'f', 'm', 't', ' ' };
-        uint32_t    size{};
+        uint32_t    size = 16;
         uint16_t    format{};
         uint16_t    channels{};
         uint32_t    sample_rate{};
@@ -42,8 +44,9 @@ namespace wavlib
         wav_header  header;
         wav_fmt     fmt;
         wav_data    data;
-
+        
     public:
+        friend class generators::generator;
         const uint16_t& channels()  const { return fmt.channels;    }
         const uint32_t& frequency() const { return fmt.sample_rate; }
         const uint32_t& byterate()  const { return fmt.byte_rate;   }
@@ -60,11 +63,6 @@ namespace wavlib
         void setdata(const std::vector<char>& raw_pcm)
         {
             data.raw_frames = raw_pcm;
-        }
-
-        void setformat(const wav_fmt& new_format)
-        {
-            fmt = new_format;
         }
 
         wav();

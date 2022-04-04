@@ -8,6 +8,7 @@
 
 namespace wavlib
 {
+    
     wav::wav() : header({}), fmt({}), data({})
     {
         
@@ -39,7 +40,7 @@ namespace wavlib
             return;
         }
         
-        stream.read(reinterpret_cast<char*>(&fmt), sizeof(wav_fmt) - sizeof(uint32_t));
+        stream.read(reinterpret_cast<char*>(&fmt), sizeof(wav_fmt));
         if(fmt.format != 1)
         {
             std::cerr << "WAV file doesn't contain uncompressed PCM data!" << std::endl;
@@ -47,7 +48,7 @@ namespace wavlib
         }
         
         stream.read(reinterpret_cast<char*>(&data), 8);
-        data.raw_frames.reserve(data.size);
+        data.raw_frames.resize(data.size);
         data.num_frames = static_cast<int>(8.0f * static_cast<float>(data.size) / static_cast<float>(fmt.channels * fmt.bit_depth));
         stream.read(data.raw_frames.data(), data.size);
     }
@@ -63,14 +64,8 @@ namespace wavlib
         stream.write(reinterpret_cast<const char*>(&header), sizeof(wav_header));
         stream.write(reinterpret_cast<const char*>(&fmt), sizeof(wav_fmt));
         stream.write(reinterpret_cast<const char*>(&data), 8);
-
-        const int maxvalue = static_cast<int>(std::pow(2, fmt.bit_depth) - 1);
-        const int minvalue = -maxvalue - 1;
+        stream.write(data.raw_frames.data(), data.raw_frames.size());
         
-        stream.seekp(4, std::ios::beg);
-        const int headersize = 36 + static_cast<int>(data.raw_frames.size());
-        stream.write(reinterpret_cast<const char*>(&headersize), 4);
-
         stream.close();
         return true;
     }
