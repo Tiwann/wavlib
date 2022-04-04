@@ -1,16 +1,17 @@
 #pragma once
 
 #define WAVLIB_IMPLEMENTATION
-#include <wavlib.h>
+#include "wavlib.h"
 #include <string>
 #include <cstring>
 #include <vector>
 
 
+
 namespace wavlib
 {
     namespace generators { class generator; }
-
+    
     struct WAVLIB_API wav_header
     {
         uint8_t     id[4] = { 'R', 'I', 'F', 'F' };

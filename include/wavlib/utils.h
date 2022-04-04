@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <wavlib.h>
+#include "wavlib.h"
 #include <string>
 namespace wavlib
 {

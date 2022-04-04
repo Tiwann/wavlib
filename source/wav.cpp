@@ -1,10 +1,10 @@
 #include "wav.h"
+#include "utils.h"
 
 #include <fstream>
 #include <algorithm>
 #include <iostream>
 #include <cmath>
-#include "utils.h"
 
 namespace wavlib
 {
@@ -22,7 +22,7 @@ namespace wavlib
         fmt.byte_rate = fmt.sample_rate * fmt.channels * fmt.bit_depth / 8;
         fmt.block_align = fmt.channels * fmt.bit_depth / 8;
         data.raw_frames = raw_audio;
-        data.num_frames = raw_audio.size() / fmt.channels * fmt.bit_depth / 8;
+        data.num_frames = 8 * raw_audio.size() / fmt.channels * fmt.bit_depth;
         data.size = data.num_frames * fmt.channels * fmt.bit_depth / 8;
         header.size = 36 + data.size;
     }

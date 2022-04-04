@@ -9,13 +9,13 @@ project "wavlib"
 
     files
     {
-        "%{prj.location}/include/*.h",
+        "%{prj.location}/include/wavlib/*.h",
         "%{prj.location}/source/*.cpp",
     }
 
     includedirs
     {
-        "%{prj.location}/include"
+        "%{prj.location}/include/wavlib"
     }
 
     filter "configurations:Debug"

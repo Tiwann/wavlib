@@ -1,12 +1,11 @@
 #pragma once
 #define WAVLIB_IMPLEMENTATION
 
-#include <wavlib.h>
-#include <cmath>
-#include <vector>
-
+#include "wavlib.h"
 #include "wav.h"
 #include "smath.h"
+#include <cmath>
+#include <vector>
 
 namespace wavlib
 {
