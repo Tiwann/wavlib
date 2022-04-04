@@ -22,7 +22,7 @@ namespace wavlib
     {
         uint8_t     id[4] = { 'f', 'm', 't', ' ' };
         uint32_t    size = 16;
-        uint16_t    format{};
+        uint16_t    format = 1;
         uint16_t    channels{};
         uint32_t    sample_rate{};
         uint32_t    byte_rate{};
@@ -67,6 +67,7 @@ namespace wavlib
 
         wav();
         wav(uint16_t channels, uint32_t frequency, uint16_t depth, const std::vector<char>& raw_audio);
+        wav(uint16_t channels, uint32_t frequency, uint16_t depth, uint32_t num_frames, const std::vector<char>& raw_audio);
         wav(const std::string& filename);
 
         bool write_to_file(const char* filename) const;

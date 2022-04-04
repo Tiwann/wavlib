@@ -19,9 +19,25 @@ namespace wavlib
         fmt.channels = channels;
         fmt.sample_rate = frequency;
         fmt.bit_depth = depth;
-        data.raw_frames = raw_audio;
         fmt.byte_rate = fmt.sample_rate * fmt.channels * fmt.bit_depth / 8;
         fmt.block_align = fmt.channels * fmt.bit_depth / 8;
+        data.raw_frames = raw_audio;
+        data.num_frames = raw_audio.size() / fmt.channels * fmt.bit_depth / 8;
+        data.size = data.num_frames * fmt.channels * fmt.bit_depth / 8;
+        header.size = 36 + data.size;
+    }
+
+    wav::wav(uint16_t channels, uint32_t frequency, uint16_t depth, uint32_t num_frames, const std::vector<char>& raw_audio) : header({}), fmt({}), data({})
+    {
+        fmt.channels = channels;
+        fmt.sample_rate = frequency;
+        fmt.bit_depth = depth;
+        fmt.byte_rate = fmt.sample_rate * fmt.channels * fmt.bit_depth / 8;
+        fmt.block_align = fmt.channels * fmt.bit_depth / 8;
+        data.raw_frames = raw_audio;
+        data.num_frames = num_frames;
+        data.size = num_frames * fmt.channels * fmt.bit_depth / 8;
+        header.size = 36 + data.size;
     }
 
     wav::wav(const std::string& filename) : header({}), fmt({}), data({})
@@ -64,7 +80,7 @@ namespace wavlib
         stream.write(reinterpret_cast<const char*>(&header), sizeof(wav_header));
         stream.write(reinterpret_cast<const char*>(&fmt), sizeof(wav_fmt));
         stream.write(reinterpret_cast<const char*>(&data), 8);
-        stream.write(data.raw_frames.data(), data.raw_frames.size());
+        stream.write(data.raw_frames.data(), (std::streamsize)data.raw_frames.size());
         
         stream.close();
         return true;

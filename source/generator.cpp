@@ -19,13 +19,8 @@ wavlib::wav wavlib::generators::generator::towav()
 		intsample = std::clamp(intsample, (int16_t)INT16_MIN, (int16_t)INT16_MAX);
 		samples.push_back(intsample);
 	}
-	std::vector<char> raw_samples(samples.size() * sizeof(int16_t));
-	std::memcpy(raw_samples.data(), samples.data(), samples.size() * sizeof(int16_t));
-	wav output(1, m_sample_rate, 16, raw_samples);
-	output.header.size = 36 + m_num_samples * sizeof(int16_t);
-	output.fmt.format = 1;
-	output.data.num_frames = m_num_samples;
-	output.data.size = m_num_samples * output.channels() * output.bit_depth() / 8;
-
+	const char* const p_data = (char*)samples.data();
+	const int size = 2 * static_cast<int>(samples.size());
+	wav output(1, m_sample_rate, 16, std::vector(p_data, p_data + size));
 	return output;
 }
