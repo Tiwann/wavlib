@@ -1,12 +1,14 @@
 #include "generator.h"
+#include <wavmath.h>
 #include <algorithm>
+
 
 wavlib::generators::generator::generator(float amp, float freq, float dur, float phase, unsigned int rate)
 	: m_amplitude(amp), m_frequency(freq), m_duration(dur), m_phase(phase), m_sample_rate(rate), m_num_samples(0)
 {
 	m_num_samples = static_cast<unsigned int>(static_cast<float>(m_sample_rate) * m_duration);
-	angle = 0.0f;
-	offset = (2 * static_cast<float>(_PI) * m_frequency + m_phase) / static_cast<float>(m_sample_rate);
+	m_angle = 0.0f;
+	m_offset = (2 * static_cast<float>(S_PI) * m_frequency + m_phase) / static_cast<float>(m_sample_rate);
 }
 
 wavlib::wav wavlib::generators::generator::towav()

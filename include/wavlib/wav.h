@@ -1,12 +1,9 @@
 #pragma once
-
-#define WAVLIB_IMPLEMENTATION
-#include "wavlib.h"
+#include <wavlib/config.h>
 #include <string>
-#include <cstring>
 #include <vector>
 
-
+#define BLOCK_SIZE 2048
 
 namespace wavlib
 {
@@ -58,8 +55,16 @@ namespace wavlib
         wav();
         wav(uint16_t channels, uint32_t frequency, uint16_t depth, const std::vector<char>& raw_audio);
         wav(uint16_t channels, uint32_t frequency, uint16_t depth, uint32_t num_frames, const std::vector<char>& raw_audio);
-        wav(const std::string& filename);
+        explicit wav(const std::string& filename);
 
         bool write_to_file(const char* filename) const;
+        void free() const;
+
+        static bool create(wav* p_wav);
+
+        const std::vector<float>&   read_pcm_frames_f32(uint32_t num_frames_to_read) const;
+        const std::vector<int16_t>& read_pcm_frames_s16(uint32_t num_frames_to_read) const;
+        const std::vector<int32_t>& read_pcm_frames_s32(uint32_t num_frames_to_read) const;
+        const std::vector<int32_t>& read_pcm_frames_s24(uint32_t num_frames_to_read) const;
     };
 }

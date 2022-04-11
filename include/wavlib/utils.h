@@ -1,6 +1,9 @@
 ﻿#pragma once
-#include "wavlib.h"
+#include <wavlib/config.h>
 #include <string>
+
+#define INT24_MAX 8388607;
+#define INT24_
 namespace wavlib
 {
     std::string WAVLIB_PRIVATE word4tos(uint8_t* word)
@@ -8,5 +11,4 @@ namespace wavlib
         std::string result((char*)word, 4);
         return result;
     }
-
 }

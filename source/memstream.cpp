@@ -1,5 +1,5 @@
 ﻿#include "memstream.h"
-
+#include <cassert>
 wavlib::memstream::memstream(): _buffer(nullptr), _size(0), _pos(0), _open(false)
 {
     

@@ -1,9 +1,8 @@
 #pragma once
-#define WAVLIB_IMPLEMENTATION
 
-#include "wavlib.h"
-#include "wav.h"
-#include "smath.h"
+#include <config.h>
+#include <wav.h>
+#include <wavmath.h>
 #include <cmath>
 #include <vector>
 
@@ -15,7 +14,7 @@ namespace wavlib
 		class WAVLIB_API generator
 		{
 		protected:
-			float angle, offset;
+			float m_angle, m_offset;
 			float m_amplitude;
 			float m_frequency;
 			float m_duration;
@@ -49,8 +48,8 @@ namespace wavlib
 
 			float gen() override
 			{
-				const float sample = m_amplitude * std::sin(angle);
-				angle += offset;
+				const float sample = m_amplitude * std::sin(m_angle);
+				m_angle += m_offset;
 				return sample;
 			}
 
@@ -63,8 +62,8 @@ namespace wavlib
 
 			float gen() override
 			{
-				const float sample = m_amplitude * wavlib::sgn(std::sin(angle));
-				angle += offset;
+				const float sample = m_amplitude * wavlib::sgn(std::sin(m_angle));
+				m_angle += m_offset;
 				return sample;
 			}
 
@@ -77,8 +76,8 @@ namespace wavlib
 
 			float gen() override
 			{
-				const float sample = m_amplitude * wavlib::triangle(angle);
-				angle += offset;
+				const float sample = m_amplitude * wavlib::triangle(m_angle);
+				m_angle += m_offset;
 				return sample;
 			}
 		};

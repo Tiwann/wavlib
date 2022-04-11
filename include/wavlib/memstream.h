@@ -1,9 +1,8 @@
 ﻿#pragma once
-#define WAVLIB_IMPLEMENTATION
-#include "wavlib.h"
-#include <cassert>
+
+#include <wavlib/config.h>
 #include <fstream>
-#include <cstring>
+
 
 namespace wavlib
 {
