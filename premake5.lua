@@ -1,11 +1,19 @@
+workspace "WavLib"
+	configurations { "Debug", "Release" }
+	architecture "x64"
+	bin = "%{wks.location}/binaries/%{cfg.buildcfg}"
+	int = "%{wks.location}/intermediate/%{cfg.buildcfg}"
+
+	include "examples/sound_generator/sound_generator.lua"
+
 project "wavlib"
 	kind "SharedLib"
 	language "C++"
 	cppdialect "C++17"
 	staticruntime "Off"
 
-	targetdir(bindir)
-	objdir(intdir)
+	targetdir(bin)
+	objdir(int)
 
 	files
 	{

@@ -103,7 +103,7 @@ namespace wavlib
         return true;
     }
 
-    const std::vector<float>& wav::read_pcm_frames_f32(uint32_t num_frames_to_read) const
+    std::vector<float> wav::read_pcm_frames_f32(uint32_t num_frames_to_read) const
     {
         const char* src = data.raw_frames.data();
         const int size = (int)data.raw_frames.size();
@@ -114,17 +114,17 @@ namespace wavlib
         return result;
     }
 
-    const std::vector<int16_t>& wav::read_pcm_frames_s16(uint32_t num_frames_to_read) const
+    std::vector<int16_t> wav::read_pcm_frames_s16(uint32_t num_frames_to_read) const
     {
         return std::vector<int16_t>(0);
     }
 
-    const std::vector<int32_t>& wav::read_pcm_frames_s32(uint32_t num_frames_to_read) const
+    std::vector<int32_t> wav::read_pcm_frames_s32(uint32_t num_frames_to_read) const
     {
         return std::vector<int32_t>(0);
     }
 
-    const std::vector<int32_t>& wav::read_pcm_frames_s24(uint32_t num_frames_to_read) const
+    std::vector<int32_t> wav::read_pcm_frames_s24(uint32_t num_frames_to_read) const
     {
         return std::vector<int32_t>(0);
     }

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <config.h>
-#include <wav.h>
-#include <wavmath.h>
+#include "config.h"
+#include "wav.h"
+#include "wavmath.h"
 #include <cmath>
 #include <vector>
 
@@ -29,13 +29,13 @@ namespace wavlib
 			virtual ~generator() = default;
 			virtual float gen() = 0;
 
-			wav				towav();
-			float			amp()	const { return m_amplitude; }
-			float			freq()	const { return m_frequency; }
-			float			dur()	const { return m_duration; }
-			float			phase()	const { return m_phase; }
-			unsigned int	rate()	const { return m_sample_rate; }
-			unsigned int	num()	const { return m_num_samples; }
+			wav							towav();
+			[[nodiscard]] float			amp()	const { return m_amplitude; }
+			[[nodiscard]] float			freq()	const { return m_frequency; }
+			[[nodiscard]] float			dur()	const { return m_duration; }
+			[[nodiscard]] float			phase()	const { return m_phase; }
+			[[nodiscard]] unsigned int	rate()	const { return m_sample_rate; }
+			[[nodiscard]] unsigned int	num()	const { return m_num_samples; }
 		};
 
 
@@ -77,6 +77,50 @@ namespace wavlib
 			float gen() override
 			{
 				const float sample = m_amplitude * wavlib::triangle(m_angle);
+				m_angle += m_offset;
+				return sample;
+			}
+		};
+
+		class WAVLIB_API sawtooth : public generator
+		{
+		public:
+			sawtooth(float amp, float freq, float dur, float phase = 0.0f, unsigned int rate = 44100)
+			: generator(amp, freq, dur, phase, rate){}
+
+			float gen() override
+			{
+				const float sample = m_amplitude * wavlib::sawtooth(m_angle);
+				m_angle += m_offset;
+				return sample;
+			}
+		};
+
+		class WAVLIB_API isawtooth : public generator
+		{
+		public:
+			isawtooth(float amp, float freq, float dur, float phase = 0.0f, unsigned int rate = 44100)
+			: generator(amp, freq, dur, phase, rate){}
+
+			float gen() override
+			{
+				const float sample = m_amplitude * wavlib::isawtooth(m_angle);
+				m_angle += m_offset;
+				return sample;
+			}
+		};
+
+		class WAVLIB_API powersine : public generator
+		{
+		private:
+			uint32_t power = 0;
+		public:
+			powersine(uint32_t power, float amp, float freq, float dur, float phase = 0.0f, unsigned int rate = 44100)
+			: generator(amp, freq, dur, phase, rate), power(power){}
+
+			float gen() override
+			{
+				const float sample = m_amplitude * wavlib::powersine(m_angle, power);
 				m_angle += m_offset;
 				return sample;
 			}

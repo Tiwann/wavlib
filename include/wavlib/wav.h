@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#define BLOCK_SIZE 2048
+const int BLOCK_SIZE = 2048;
 
 namespace wavlib
 {
@@ -45,12 +45,12 @@ namespace wavlib
         
     public:
         friend class generators::generator;
-        const uint16_t& channels()          const { return fmt.channels;    }
-        const uint32_t& frequency()         const { return fmt.sample_rate; }
-        const uint32_t& byterate()          const { return fmt.byte_rate;   }
-        const uint16_t& bit_depth()         const { return fmt.bit_depth;   }
-        const uint32_t& num_frames()        const { return data.num_frames; }
-        const std::vector<char>& raw_pcm()  const { return data.raw_frames; }
+        uint16_t channels()   const { return fmt.channels;    }
+        uint32_t frequency()  const { return fmt.sample_rate; }
+        uint32_t byterate()   const { return fmt.byte_rate;   }
+        uint16_t bit_depth()  const { return fmt.bit_depth;   }
+        uint32_t num_frames() const { return data.num_frames; }
+        [[nodiscard]] const std::vector<char>& raw_pcm()  const { return data.raw_frames; }
 
         wav();
         wav(uint16_t channels, uint32_t frequency, uint16_t depth, const std::vector<char>& raw_audio);
@@ -62,9 +62,9 @@ namespace wavlib
 
         static bool create(wav* p_wav);
 
-        const std::vector<float>&   read_pcm_frames_f32(uint32_t num_frames_to_read) const;
-        const std::vector<int16_t>& read_pcm_frames_s16(uint32_t num_frames_to_read) const;
-        const std::vector<int32_t>& read_pcm_frames_s32(uint32_t num_frames_to_read) const;
-        const std::vector<int32_t>& read_pcm_frames_s24(uint32_t num_frames_to_read) const;
+        [[nodiscard]] std::vector<float> read_pcm_frames_f32(uint32_t num_frames_to_read) const;
+        [[nodiscard]] std::vector<int16_t> read_pcm_frames_s16(uint32_t num_frames_to_read) const;
+        [[nodiscard]] std::vector<int32_t> read_pcm_frames_s32(uint32_t num_frames_to_read) const;
+        [[nodiscard]] std::vector<int32_t> read_pcm_frames_s24(uint32_t num_frames_to_read) const;
     };
 }

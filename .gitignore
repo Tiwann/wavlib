@@ -6,3 +6,5 @@
 *.sln
 *Makefile
 CMakeLists.txt
+binaries
+intermediate
